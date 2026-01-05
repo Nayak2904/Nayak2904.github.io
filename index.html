@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shivajee Nayak | Software Engineer & FinTech Visionary</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+
+    :root {
+      --primary: #00f2ff;
+      --secondary: #7000ff;
+      --bg-dark: #050505;
+      --card-bg: rgba(255, 255, 255, 0.03);
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg-dark);
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-dark);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, var(--primary), var(--secondary));
+      border-radius: 10px;
+    }
+
+    /* Live Animation Canvas */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      opacity: 0.8;
+    }
+
+    /* Scanline Effect overlay */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom,
+          rgba(18, 16, 16, 0) 50%,
+          rgba(0, 0, 0, 0.1) 50%);
+      background-size: 100% 4px;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    /* Animated Grid Background */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background-image:
+        linear-gradient(to right, rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(circle at center, black, transparent 90%);
+    }
+
+    /* Glitch Animation */
+    @keyframes glitch {
+      0% {
+        transform: translate(0);
+      }
+
+      20% {
+        transform: translate(-2px, 2px);
+      }
+
+      40% {
+        transform: translate(-2px, -2px);
+      }
+
+      60% {
+        transform: translate(2px, 2px);
+      }
+
+      80% {
+        transform: translate(2px, -2px);
+      }
+
+      100% {
+        transform: translate(0);
+      }
+    }
+
+    .glitch-hover:hover {
+      animation: glitch 0.3s cubic-bezier(.25, .46, .45, .94) both infinite;
+      color: var(--primary);
+      text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary);
+    }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(10, 10, 10, 0.6);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: all 0.4s ease;
+    }
+
+    .glass:hover {
+      border-color: var(--primary);
+      box-shadow: 0 0 25px rgba(0, 242, 255, 0.1);
+      transform: translateY(-5px);
+    }
+
+    /* Button Glow & Sweep Effect */
+    .btn-cyber {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .btn-cyber::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 242, 255, 0.2), transparent);
+      transition: 0.6s;
+    }
+
+    .btn-cyber:hover::after {
+      left: 100%;
+    }
+
+    .btn-cyber:hover {
+      box-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+      transform: scale(1.05);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Neon Text */
+    .neon-text {
+      color: var(--primary);
+      text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
+    }
+
+    /* Loading Screen */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: #000;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.8s ease;
+    }
+
+    .typing-demo {
+      width: 22ch;
+      animation: typing 2s steps(22), blink .5s step-end infinite alternate;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 3px solid var(--primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+    }
+
+    @keyframes typing {
+      from {
+        width: 0
+      }
+    }
+
+    @keyframes blink {
+      50% {
+        border-color: transparent
+      }
+    }
+
+    /* Animation Classes */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+
+<body class="bg-[#050505] selection:bg-primary selection:text-black">
+
+  <div class="scanlines"></div>
+  <div class="grid-bg"></div>
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- Loader -->
+  <div id="loader">
+    <div class="typing-demo neon-text">LOADING_DATA_STREAMS...</div>
+    <div class="mt-4 text-[10px] mono text-gray-500 tracking-[0.3em] uppercase">Shivajee Nayak // Software Architect
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center bg-transparent">
+    <div class="text-xl font-bold tracking-tighter mono uppercase">
+      S_NAYAK
+    </div>
+    <div class="hidden md:flex space-x-12 mono text-[10px] tracking-[0.3em] uppercase font-bold opacity-60">
+      <a href="#hero" class="hover:text-primary transition-colors">Home</a>
+      <a href="#about" class="hover:text-primary transition-colors">Experience</a>
+      <a href="#projects" class="hover:text-primary transition-colors">Projects</a>
+      <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
+    </div>
+    <div>
+      <a href="mailto:nayakshivajee@gmail.com"
+        class="p-2 px-6 bg-white text-black font-bold rounded-sm text-[10px] uppercase tracking-widest hover:bg-primary transition-all shadow-xl">Hire
+        Me</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+    <div class="container mx-auto px-6 relative z-10 text-center">
+      <div
+        class="inline-block px-4 py-1 mb-8 border border-primary/30 rounded-full bg-primary/5 text-primary text-[10px] mono tracking-widest animate-pulse">
+        SYSTEMS_ONLINE // BALANGIR_NODE
+      </div>
+      <h1 class="text-7xl md:text-9xl font-bold tracking-tighter mb-6 glitch-hover leading-none uppercase">
+        SHIVAJEE<br />NAYAK
+      </h1>
+      <p class="text-lg md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed">
+        Computer Science Graduate. <span class="text-white font-medium">FinTech Architect & Cybersecurity
+          Specialist.</span><br />Designing high-integrity solutions for the digital economy.
+      </p>
+
+      <div class="flex flex-wrap justify-center gap-6">
+        <a href="#projects"
+          class="btn-cyber px-10 py-5 border border-white/10 text-white font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
+          Repository <i data-lucide="folder-git-2" class="w-4 h-4"></i>
+        </a>
+        <a href="https://linkedin.com/in/shivajee-nayak" target="_blank"
+          class="btn-cyber px-10 py-5 border border-white/10 text-white font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
+          LinkedIn <i data-lucide="external-link" class="w-4 h-4"></i>
+        </a>
+      </div>
+    </div>
+
+    <div
+      class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-30 animate-bounce">
+      <span class="text-[9px] mono uppercase tracking-[0.5em]">Scroll to Access</span>
+      <i data-lucide="chevron-down" class="w-4 h-4 text-primary"></i>
+    </div>
+  </section>
+
+  <!-- Core Intel Section -->
+  <section id="about" class="py-32 relative reveal">
+    <div class="container mx-auto px-6">
+      <div class="grid md:grid-cols-2 gap-20 items-center">
+        <div>
+          <h2 class="text-xs mono tracking-[0.5em] text-primary uppercase mb-12">01_The_Intel</h2>
+          <p class="text-3xl md:text-5xl font-light leading-tight mb-10">
+            First Class Honors graduate specialized in <span class="italic text-white">Digital Resilience</span> and
+            FinTech innovation.
+          </p>
+          <div class="grid grid-cols-2 gap-4">
+            <div class="p-8 glass">
+              <div class="text-4xl font-bold mb-1">78%</div>
+              <div class="text-[9px] mono uppercase opacity-40 tracking-widest">Logic & Math</div>
+            </div>
+            <div class="p-8 glass">
+              <div class="text-4xl font-bold mb-1 text-secondary">NUS</div>
+              <div class="text-[9px] mono uppercase opacity-40 tracking-widest">FinTech Cert</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-10">
+          <div class="flex gap-6 p-6 glass rounded-2xl group">
+            <div class="bg-primary/10 p-4 rounded-xl group-hover:bg-primary/20 transition-colors">
+              <i data-lucide="shield-check" class="text-primary w-8 h-8"></i>
+            </div>
+            <div>
+              <h4 class="font-bold mb-2 uppercase tracking-widest text-sm">Cybersecurity Defense</h4>
+              <p class="text-gray-500 text-sm leading-relaxed">Certified in Ethical Hacking concepts and network defense
+                strategies. Focused on defensive architecture.</p>
+            </div>
+          </div>
+          <div class="flex gap-6 p-6 glass rounded-2xl group">
+            <div class="bg-secondary/10 p-4 rounded-xl group-hover:bg-secondary/20 transition-colors">
+              <i data-lucide="brain-circuit" class="text-secondary w-8 h-8"></i>
+            </div>
+            <div>
+              <h4 class="font-bold mb-2 uppercase tracking-widest text-sm">AI Systems</h4>
+              <p class="text-gray-500 text-sm leading-relaxed">Building predictive models using Random Forest to
+                optimize agricultural and financial datasets.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects Repository -->
+  <section id="projects" class="py-32 relative reveal">
+    <div class="container mx-auto px-6">
+      <div class="flex justify-between items-end mb-24">
+        <h2 class="text-xs mono tracking-[0.5em] text-white/30 uppercase">02_Selected_Works</h2>
+        <span class="text-[9px] mono opacity-20 uppercase tracking-[0.3em]">Build_Log: 2025</span>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-1px bg-white/5 border border-white/5">
+        <div
+          class="bg-[#050505]/80 p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-r border-b border-white/5">
+          <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-primary">
+            <i data-lucide="line-chart" class="w-10 h-10"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">Crop Prediction</h3>
+          <p class="text-sm text-gray-500 mb-10 leading-relaxed">ML engine forecasting agricultural yields based on
+            climate parameters. Thesis project using Random Forest.</p>
+          <div class="flex gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
+            <span>Python</span>
+            <span>Machine Learning</span>
+          </div>
+        </div>
+
+        <div
+          class="bg-[#050505]/80 p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-r border-b border-white/5">
+          <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-secondary">
+            <i data-lucide="layers" class="w-10 h-10"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">ShramLink</h3>
+          <p class="text-sm text-gray-500 mb-10 leading-relaxed">Hyperlocal platform connecting informal workers with
+            escrow-backed wage protection systems.</p>
+          <div class="flex gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
+            <span>Microservices</span>
+            <span>FinTech</span>
+          </div>
+        </div>
+
+        <div
+          class="bg-[#050505]/80 p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-b border-white/5">
+          <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-cyan-400">
+            <i data-lucide="stethoscope" class="w-10 h-10"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">AI Doctor</h3>
+          <p class="text-sm text-gray-500 mb-10 leading-relaxed">Fairness-optimized scheduling logic for healthcare
+            access using real-time distribution algorithms.</p>
+          <div class="flex gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
+            <span>Algorithmic</span>
+            <span>Optimization</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Correspondence Section -->
+  <section id="contact" class="py-40 text-center reveal">
+    <div class="container mx-auto px-6">
+      <h2 class="text-[10px] mono tracking-[1.5em] uppercase opacity-20 mb-20">Initiate_Correspondence</h2>
+
+      <div class="flex flex-wrap justify-center gap-12 md:gap-16 items-center">
+        <a href="mailto:nayakshivajee@gmail.com?subject=Contact%20from%20Portfolio"
+          class="p-8 glass rounded-full hover:bg-white hover:text-black transition-all group">
+          <i data-lucide="mail" class="w-10 h-10 group-hover:scale-110 transition-transform"></i>
+        </a>
+        <a href="https://github.com/Nayak2904" target="_blank"
+          class="p-8 glass rounded-full hover:bg-white hover:text-black transition-all group">
+          <i data-lucide="github" class="w-10 h-10 group-hover:scale-110 transition-transform"></i>
+        </a>
+        <a href="https://linkedin.com/in/shivajee-nayak" target="_blank"
+          class="p-8 glass rounded-full hover:bg-white hover:text-black transition-all group">
+          <i data-lucide="linkedin" class="w-10 h-10 group-hover:scale-110 transition-transform"></i>
+        </a>
+      </div>
+
+      <p class="mt-16 text-gray-500 text-[10px] mono tracking-[0.4em] uppercase opacity-40">nayakshivajee@gmail.com</p>
+    </div>
+  </section>
+
+  <footer class="py-20 border-t border-white/5 text-center">
+    <p class="mono text-[9px] text-gray-700 uppercase tracking-[1em]">
+      &copy; 2025 Shivajee Nayak // Protocol_V4 // Odisha
+    </p>
+  </footer>
+
+  <script>
+    // --- ADDICTIVE DIGITAL FLOW FIELD ANIMATION ---
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouse = { x: -1000, y: -1000 };
+
+    function initCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      particles = [];
+      // Create a high density field
+      const count = (canvas.width * canvas.height) / 10000;
+      for (let i = 0; i < count; i++) {
+        particles.push(new FlowParticle());
+      }
+    }
+
+    class FlowParticle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 1.5 + 0.5;
+        this.vx = (Math.random() - 0.5) * 1.5;
+        this.vy = (Math.random() - 0.5) * 1.5;
+        this.color = Math.random() > 0.5 ? 'rgba(0, 242, 255, 0.4)' : 'rgba(112, 0, 255, 0.3)';
+        this.history = [];
+        this.maxHistory = 15;
+      }
+      update() {
+        // Background Drift
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Mouse Interaction (Magnetic Vortex)
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const limit = 250;
+
+        if (dist < limit) {
+          const force = (limit - dist) / limit;
+          // Move towards mouse
+          this.x += dx * force * 0.05;
+          this.y += dy * force * 0.05;
+          // Swirl around mouse
+          this.x += dy * force * 0.15;
+          this.y -= dx * force * 0.15;
+        }
+
+        // Wrap edges
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
+
+        // Update tail
+        this.history.push({ x: this.x, y: this.y });
+        if (this.history.length > this.maxHistory) this.history.shift();
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.strokeStyle = this.color;
+        ctx.lineWidth = this.size;
+        if (this.history.length > 1) {
+          ctx.moveTo(this.history[0].x, this.history[0].y);
+          for (let p of this.history) {
+            ctx.lineTo(p.x, p.y);
+          }
+        }
+        ctx.stroke();
+      }
+    }
+
+    function animate() {
+      // Slight motion blur effect
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('resize', () => {
+      initCanvas();
+    });
+
+    // Initialize UI Elements
+    window.onload = () => {
+      initCanvas();
+      animate();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+
+      // Loader termination
+      setTimeout(() => {
+        document.getElementById('loader').style.opacity = '0';
+        setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
+        handleScroll();
+      }, 2000);
+    };
+
+    // Scroll Reveal logic
+    const reveals = document.querySelectorAll('.reveal');
+    const handleScroll = () => {
+      reveals.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if (rect.top < window.innerHeight - 100) {
+          el.classList.add('active');
+        }
+      });
+    };
+    window.addEventListener('scroll', handleScroll);
+  </script>
+</body>
+
+</html>
