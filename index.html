@@ -15,21 +15,87 @@
       --primary: #00f2ff;
       --secondary: #7000ff;
       --bg-dark: #050505;
+      --text-main: #e2e8f0;
       --card-bg: rgba(255, 255, 255, 0.03);
+      --border-color: rgba(255, 255, 255, 0.05);
+      --grid-opacity: 0.03;
+      --nav-bg: rgba(10, 10, 10, 0.7);
+    }
+
+    /* Light Mode Variables */
+    body.light-mode {
+      --bg-dark: #f8fafc;
+      --text-main: #0f172a;
+      --card-bg: rgba(0, 0, 0, 0.03);
+      --border-color: rgba(0, 0, 0, 0.1);
+      --grid-opacity: 0.08;
+      --primary: #0ea5e9;
+      --secondary: #6366f1;
+      --nav-bg: rgba(248, 250, 252, 0.8);
     }
 
     body {
       font-family: 'Space Grotesk', sans-serif;
       background-color: var(--bg-dark);
-      color: #e2e8f0;
+      color: var(--text-main);
       overflow-x: hidden;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      cursor: none;
+    }
+
+    a,
+    button,
+    [role="button"],
+    .quiz-option {
+      cursor: none !important;
     }
 
     .mono {
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Custom Scrollbar */
+    /* Custom Cursor Styles */
+    #cursor {
+      width: 12px;
+      height: 12px;
+      background-color: var(--primary);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 10001;
+      transition: transform 0.1s ease, background-color 0.3s ease, width 0.3s ease, height 0.3s ease;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    #cursor-outline {
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--primary);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 10001;
+      transition: transform 0.15s ease-out, border-color 0.3s ease, width 0.3s ease, height 0.3s ease;
+      transform: translate(-50%, -50%);
+      opacity: 0.5;
+    }
+
+    body.cursor-hover #cursor {
+      width: 8px;
+      height: 8px;
+      background-color: var(--secondary);
+      box-shadow: 0 0 20px var(--secondary);
+    }
+
+    body.cursor-hover #cursor-outline {
+      width: 50px;
+      height: 50px;
+      border-color: var(--secondary);
+      border-width: 2px;
+      opacity: 0.8;
+    }
+
     ::-webkit-scrollbar {
       width: 6px;
     }
@@ -43,7 +109,6 @@
       border-radius: 10px;
     }
 
-    /* Live Animation Canvas */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -55,7 +120,6 @@
       opacity: 0.8;
     }
 
-    /* Scanline Effect overlay */
     .scanlines {
       position: fixed;
       top: 0;
@@ -71,19 +135,23 @@
       opacity: 0.3;
     }
 
-    /* Animated Grid Background */
+    body.light-mode .scanlines {
+      opacity: 0.05;
+    }
+
     .grid-bg {
       position: fixed;
       inset: 0;
       z-index: -2;
       background-image:
-        linear-gradient(to right, rgba(0, 242, 255, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(to right, var(--primary) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--primary) 1px, transparent 1px);
       background-size: 60px 60px;
       mask-image: radial-gradient(circle at center, black, transparent 90%);
+      opacity: var(--grid-opacity);
+      transition: opacity 0.5s ease;
     }
 
-    /* Glitch Animation */
     @keyframes glitch {
       0% {
         transform: translate(0);
@@ -116,11 +184,10 @@
       text-shadow: 2px 0 var(--secondary), -2px 0 var(--primary);
     }
 
-    /* Glassmorphism */
     .glass {
-      background: rgba(10, 10, 10, 0.6);
+      background: var(--card-bg);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
       transition: all 0.4s ease;
     }
 
@@ -130,12 +197,20 @@
       transform: translateY(-5px);
     }
 
-    /* Button Glow & Sweep Effect */
+    .nav-glass {
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
     .btn-cyber {
       position: relative;
       overflow: hidden;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
     }
 
     .btn-cyber::after {
@@ -160,13 +235,40 @@
       color: var(--primary);
     }
 
-    /* Neon Text */
+    .quiz-option {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-color);
+      padding: 1rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      text-align: left;
+      width: 100%;
+      margin-bottom: 0.5rem;
+      color: inherit;
+    }
+
+    .quiz-option:hover {
+      background: rgba(0, 242, 255, 0.1);
+      border-color: var(--primary);
+    }
+
+    .quiz-option.correct {
+      background: rgba(34, 197, 94, 0.2);
+      border-color: #22c55e;
+      color: #22c55e;
+    }
+
+    .quiz-option.wrong {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: #ef4444;
+      color: #ef4444;
+    }
+
     .neon-text {
       color: var(--primary);
       text-shadow: 0 0 10px rgba(0, 242, 255, 0.5);
     }
 
-    /* Loading Screen */
     #loader {
       position: fixed;
       inset: 0;
@@ -201,7 +303,6 @@
       }
     }
 
-    /* Animation Classes */
     .reveal {
       opacity: 0;
       transform: translateY(30px);
@@ -212,24 +313,38 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+    .theme-toggle {
+      padding: 8px;
+      border-radius: 50%;
+      transition: background-color 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .theme-toggle:hover {
+      background-color: var(--card-bg);
+    }
   </style>
 </head>
 
-<body class="bg-[#050505] selection:bg-primary selection:text-black">
+<body class="selection:bg-primary selection:text-black">
+
+  <div id="cursor"></div>
+  <div id="cursor-outline"></div>
 
   <div class="scanlines"></div>
   <div class="grid-bg"></div>
   <canvas id="bg-canvas"></canvas>
 
-  <!-- Loader -->
   <div id="loader">
     <div class="typing-demo neon-text">LOADING_DATA_STREAMS...</div>
     <div class="mt-4 text-[10px] mono text-gray-500 tracking-[0.3em] uppercase">Shivajee Nayak // Software Architect
     </div>
   </div>
 
-  <!-- Navbar -->
-  <nav class="fixed top-0 w-full z-50 px-8 py-6 flex justify-between items-center bg-transparent">
+  <nav class="fixed top-0 w-full z-50 px-8 py-4 flex justify-between items-center nav-glass">
     <div class="text-xl font-bold tracking-tighter mono uppercase">
       S_NAYAK
     </div>
@@ -237,16 +352,20 @@
       <a href="#hero" class="hover:text-primary transition-colors">Home</a>
       <a href="#about" class="hover:text-primary transition-colors">Experience</a>
       <a href="#projects" class="hover:text-primary transition-colors">Projects</a>
+      <a href="#quiz" class="hover:text-primary transition-colors">Quiz</a>
       <a href="#contact" class="hover:text-primary transition-colors">Contact</a>
     </div>
-    <div>
-      <a href="mailto:nayakshivajee@gmail.com"
+    <div class="flex items-center gap-6">
+      <button id="theme-btn" class="theme-toggle" aria-label="Toggle theme">
+        <i data-lucide="moon" id="theme-icon" class="w-5 h-5 text-primary"></i>
+      </button>
+      <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nayakshivajee@gmail.com&su=Hiring%20Inquiry%20for%20Shivajee%20Nayak"
+        target="_blank"
         class="p-2 px-6 bg-white text-black font-bold rounded-sm text-[10px] uppercase tracking-widest hover:bg-primary transition-all shadow-xl">Hire
         Me</a>
     </div>
   </nav>
 
-  <!-- Hero Section -->
   <section id="hero" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
     <div class="container mx-auto px-6 relative z-10 text-center">
       <div
@@ -256,28 +375,26 @@
       <h1 class="text-7xl md:text-9xl font-bold tracking-tighter mb-6 glitch-hover leading-none uppercase">
         SHIVAJEE<br />NAYAK
       </h1>
-      <p class="text-lg md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 font-light leading-relaxed">
-        Computer Science Graduate. <span class="text-white font-medium">FinTech Architect & Cybersecurity
+      <p class="text-lg md:text-2xl opacity-80 max-w-3xl mx-auto mb-12 font-light leading-relaxed">
+        Computer Science Graduate. <span class="font-medium text-primary">FinTech Architect & Cybersecurity
           Specialist.</span><br />Designing high-integrity solutions for the digital economy.
       </p>
 
-      <!-- Button Group -->
       <div class="flex flex-wrap justify-center gap-6 mb-16">
         <a href="#projects"
-          class="btn-cyber px-10 py-5 border border-white/10 text-white font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
+          class="btn-cyber px-10 py-5 text-inherit font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
           Repository <i data-lucide="folder-git-2" class="w-4 h-4"></i>
         </a>
         <a href="Shivajee_Nayak_Resume.pdf" target="_blank"
-          class="btn-cyber px-10 py-5 border border-white/10 text-white font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
+          class="btn-cyber px-10 py-5 text-inherit font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
           Resume <i data-lucide="file-text" class="w-4 h-4"></i>
         </a>
         <a href="https://linkedin.com/in/shivajee-nayak" target="_blank"
-          class="btn-cyber px-10 py-5 border border-white/10 text-white font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
+          class="btn-cyber px-10 py-5 text-inherit font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
           LinkedIn <i data-lucide="external-link" class="w-4 h-4"></i>
         </a>
       </div>
 
-      <!-- Moved Scroll Indicator Under Buttons (Non-absolute) -->
       <div class="flex flex-col items-center gap-3 opacity-30 animate-bounce">
         <span class="text-[9px] mono uppercase tracking-[0.5em]">Scroll to Access</span>
         <i data-lucide="chevron-down" class="w-4 h-4 text-primary"></i>
@@ -285,14 +402,13 @@
     </div>
   </section>
 
-  <!-- Core Intel Section -->
   <section id="about" class="py-32 relative reveal">
     <div class="container mx-auto px-6">
       <div class="grid md:grid-cols-2 gap-20 items-center">
         <div>
           <h2 class="text-xs mono tracking-[0.5em] text-primary uppercase mb-12">01_The_Intel</h2>
           <p class="text-3xl md:text-5xl font-light leading-tight mb-10">
-            First Class Honors graduate specialized in <span class="italic text-white">Digital Resilience</span> and
+            First Class Honors graduate specialized in <span class="italic font-medium">Digital Resilience</span> and
             FinTech innovation.
           </p>
           <div class="grid grid-cols-2 gap-4">
@@ -314,7 +430,7 @@
             </div>
             <div>
               <h4 class="font-bold mb-2 uppercase tracking-widest text-sm">Cybersecurity Defense</h4>
-              <p class="text-gray-500 text-sm leading-relaxed">Certified in Ethical Hacking concepts and network defense
+              <p class="opacity-60 text-sm leading-relaxed">Certified in Ethical Hacking concepts and network defense
                 strategies. Focused on defensive architecture.</p>
             </div>
           </div>
@@ -324,8 +440,8 @@
             </div>
             <div>
               <h4 class="font-bold mb-2 uppercase tracking-widest text-sm">AI Systems</h4>
-              <p class="text-gray-500 text-sm leading-relaxed">Building predictive models using Random Forest to
-                optimize agricultural and financial datasets.</p>
+              <p class="opacity-60 text-sm leading-relaxed">Building predictive models using Random Forest to optimize
+                agricultural and financial datasets.</p>
             </div>
           </div>
         </div>
@@ -333,36 +449,33 @@
     </div>
   </section>
 
-  <!-- Projects Repository -->
   <section id="projects" class="py-32 relative reveal">
     <div class="container mx-auto px-6">
       <div class="flex justify-between items-end mb-24">
-        <h2 class="text-xs mono tracking-[0.5em] text-white/30 uppercase">02_Selected_Works</h2>
+        <h2 class="text-xs mono tracking-[0.5em] opacity-40 uppercase">02_Selected_Works</h2>
         <span class="text-[9px] mono opacity-20 uppercase tracking-[0.3em]">Build_Log: 2025</span>
       </div>
 
       <div class="grid md:grid-cols-3 gap-1px bg-white/5 border border-white/5">
-        <div
-          class="bg-[#050505]/80 p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-r border-b border-white/5">
+        <div class="glass p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-r border-b">
           <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-primary">
             <i data-lucide="line-chart" class="w-10 h-10"></i>
           </div>
           <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">Crop Prediction</h3>
-          <p class="text-sm text-gray-500 mb-10 leading-relaxed">ML engine forecasting agricultural yields based on
-            climate parameters. Thesis project using Random Forest.</p>
+          <p class="text-sm opacity-60 mb-10 leading-relaxed">ML engine forecasting agricultural yields based on climate
+            parameters. Thesis project using Random Forest.</p>
           <div class="flex gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
             <span>Python</span>
             <span>Machine Learning</span>
           </div>
         </div>
 
-        <div
-          class="bg-[#050505]/80 p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-r border-b border-white/5">
+        <div class="glass p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-r border-b">
           <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-secondary">
             <i data-lucide="layers" class="w-10 h-10"></i>
           </div>
           <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">ShramLink</h3>
-          <p class="text-sm text-gray-500 mb-10 leading-relaxed">Hyperlocal platform connecting informal workers with
+          <p class="text-sm opacity-60 mb-10 leading-relaxed">Hyperlocal platform connecting informal workers with
             escrow-backed wage protection systems.</p>
           <div class="flex gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
             <span>Microservices</span>
@@ -370,17 +483,64 @@
           </div>
         </div>
 
-        <div
-          class="bg-[#050505]/80 p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-b border-white/5">
+        <div class="glass p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-b">
           <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-cyan-400">
             <i data-lucide="stethoscope" class="w-10 h-10"></i>
           </div>
           <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">AI Doctor</h3>
-          <p class="text-sm text-gray-500 mb-10 leading-relaxed">Fairness-optimized scheduling logic for healthcare
-            access using real-time distribution algorithms.</p>
+          <p class="text-sm opacity-60 mb-10 leading-relaxed">Fairness-optimized scheduling logic for healthcare access
+            using real-time distribution algorithms.</p>
           <div class="flex gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
             <span>Algorithmic</span>
             <span>Optimization</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Interactive Quiz Section -->
+  <section id="quiz" class="py-32 relative reveal">
+    <div class="container mx-auto px-6">
+      <div
+        class="max-w-3xl mx-auto glass p-12 rounded-3xl border-t-2 border-t-primary shadow-2xl relative overflow-hidden">
+        <div class="flex items-center justify-between mb-8">
+          <h2 class="text-xs mono tracking-[0.5em] text-primary uppercase">03_Code_Challenge</h2>
+          <span id="quiz-step" class="text-[10px] mono opacity-40">STEP: 0/5</span>
+        </div>
+
+        <div id="quiz-content">
+          <div id="start-screen" class="text-center py-10">
+            <i data-lucide="terminal" class="w-16 h-16 text-primary mx-auto mb-6"></i>
+            <h3 class="text-3xl font-bold mb-4 uppercase tracking-tighter">System Diagnostic</h3>
+            <p class="text-gray-400 mb-8 font-light">Test your logic with a unique set of questions. Every attempt is
+              different.</p>
+            <button onclick="startQuiz()"
+              class="btn-cyber px-12 py-4 text-white font-bold text-xs uppercase tracking-widest">Initialize</button>
+          </div>
+
+          <div id="question-screen" class="hidden">
+            <h4 id="question-text" class="text-2xl font-medium mb-8 leading-tight">Loading bit-stream...</h4>
+            <div id="options-container" class="space-y-3"></div>
+          </div>
+
+          <div id="result-screen" class="hidden text-center py-10">
+            <div class="relative inline-block mb-6">
+              <svg class="w-32 h-32 transform -rotate-90">
+                <circle cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8" fill="transparent"
+                  class="text-white/5"></circle>
+                <circle id="score-circle" cx="64" cy="64" r="58" stroke="currentColor" stroke-width="8"
+                  fill="transparent" stroke-dasharray="364.4" stroke-dashoffset="364.4"
+                  class="text-primary transition-all duration-1000"></circle>
+              </svg>
+              <div class="absolute inset-0 flex items-center justify-center">
+                <span id="final-score" class="text-4xl font-bold">0</span>
+              </div>
+            </div>
+            <h3 id="score-title" class="text-3xl font-bold mb-2 uppercase tracking-tighter">Evaluation Complete</h3>
+            <p id="score-description" class="text-gray-400 mb-10 font-light"></p>
+            <button onclick="resetQuiz()"
+              class="btn-cyber px-10 py-3 text-white font-bold text-[10px] uppercase tracking-widest">Re-Initialize</button>
           </div>
         </div>
       </div>
@@ -393,8 +553,8 @@
       <h2 class="text-[10px] mono tracking-[1.5em] uppercase opacity-20 mb-20">Initiate_Correspondence</h2>
 
       <div class="flex flex-wrap justify-center gap-12 md:gap-16 items-center">
-        <a href="mailto:nayakshivajee@gmail.com?subject=Contact%20from%20Portfolio"
-          class="p-8 glass rounded-full hover:bg-white hover:text-black transition-all group">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nayakshivajee@gmail.com&su=Message%20for%20Shivajee%20Nayak"
+          target="_blank" class="p-8 glass rounded-full hover:bg-white hover:text-black transition-all group">
           <i data-lucide="mail" class="w-10 h-10 group-hover:scale-110 transition-transform"></i>
         </a>
         <a href="https://github.com/Nayak2904" target="_blank"
@@ -407,76 +567,204 @@
         </a>
       </div>
 
-      <p class="mt-16 text-gray-500 text-[10px] mono tracking-[0.4em] uppercase opacity-40">nayakshivajee@gmail.com</p>
+      <p class="mt-16 opacity-40 text-[10px] mono tracking-[0.4em] uppercase">nayakshivajee@gmail.com</p>
     </div>
   </section>
 
   <footer class="py-20 border-t border-white/5 text-center">
-    <p class="mono text-[9px] text-gray-700 uppercase tracking-[1em]">
+    <p class="mono text-[9px] opacity-40 uppercase tracking-[1em]">
       &copy; 2025 Shivajee Nayak // Protocol_V4 // Odisha
     </p>
   </footer>
 
   <script>
-    // --- ADDICTIVE DIGITAL FLOW FIELD ANIMATION ---
+    // --- EXPANDED DYNAMIC QUIZ BANK ---
+    const questionBank = [
+      { q: "What does HTML stand for?", o: ["HyperText Markup Language", "High Tech Multi Language", "Hyperlink Text Mode Logic", "Home Tool Markup Level"], a: 0 },
+      { q: "Which keyword is used to declare a constant in JS?", o: ["const", "var", "let", "def"], a: 0 },
+      { q: "Which of these is NOT a backend language?", o: ["CSS", "Node.js", "Python", "Java"], a: 0 },
+      { q: "What does API stand for?", o: ["Application Program Interface", "Advanced Protocol Integration", "Automated Profile Index", "Archive Port Info"], a: 0 },
+      { q: "Symbol for single-line comments in C++?", o: ["//", "#", "/*", "--"], a: 0 },
+      { q: "Which data structure uses FIFO?", o: ["Queue", "Stack", "Tree", "Array"], a: 0 },
+      { q: "What is the result of 5 + '5' in JavaScript?", o: ["'55'", "10", "NaN", "Error"], a: 0 },
+      { q: "Which port is standard for HTTP?", o: ["80", "443", "22", "21"], a: 0 },
+      { q: "Who is known as the father of Java?", o: ["James Gosling", "Guido van Rossum", "Dennis Ritchie", "Bjarne Stroustrup"], a: 0 },
+      { q: "Which command lists files in Linux?", o: ["ls", "dir", "grep", "cd"], a: 0 },
+      { q: "What does SQL stand for?", o: ["Structured Query Language", "Simple Quick Logic", "Systematic Query List", "Standard Queue Law"], a: 0 },
+      { q: "A function that calls itself is known as...?", o: ["Recursion", "Iteration", "Looping", "Callback"], a: 0 },
+      { q: "Which tag is used for the largest heading in HTML?", o: ["<h1>", "<head>", "<h6>", "<header>"], a: 0 },
+      { q: "Is JavaScript single-threaded?", o: ["Yes", "No", "Depends on OS", "Only in backend"], a: 0 },
+      { q: "Which protocol is used for secure shell access?", o: ["SSH", "FTP", "HTTP", "SMTP"], a: 0 }
+    ];
+
+    let selectedQuestions = [];
+    let currentQuestion = 0;
+    let score = 0;
+    let canAnswer = true;
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function startQuiz() {
+      // Shuffle and pick 5 unique questions
+      selectedQuestions = shuffle([...questionBank]).slice(0, 5);
+      currentQuestion = 0;
+      score = 0;
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.add('hidden');
+      document.getElementById('question-screen').classList.remove('hidden');
+      showQuestion();
+    }
+
+    function showQuestion() {
+      canAnswer = true;
+      const qData = selectedQuestions[currentQuestion];
+      document.getElementById('quiz-step').innerText = `STEP: ${currentQuestion + 1}/5`;
+      document.getElementById('question-text').innerText = qData.q;
+
+      // Randomize options but track the correct one
+      const options = qData.o.map((text, i) => ({ text, isCorrect: i === qData.a }));
+      shuffle(options);
+
+      const container = document.getElementById('options-container');
+      container.innerHTML = '';
+      options.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-option mono text-sm transition-all';
+        btn.innerText = `> ${opt.text}`;
+        btn.onclick = () => selectOption(opt.isCorrect, btn);
+        container.appendChild(btn);
+      });
+      attachCursorEvents();
+    }
+
+    function selectOption(isCorrect, btn) {
+      if (!canAnswer) return;
+      canAnswer = false;
+
+      const options = document.querySelectorAll('.quiz-option');
+
+      if (isCorrect) {
+        btn.classList.add('correct');
+        score++;
+      } else {
+        btn.classList.add('wrong');
+        // Show correct one
+        options.forEach(b => {
+          if (b.innerText.includes(selectedQuestions[currentQuestion].o[selectedQuestions[currentQuestion].a])) {
+            b.classList.add('correct');
+          }
+        });
+      }
+
+      setTimeout(() => {
+        currentQuestion++;
+        if (currentQuestion < 5) {
+          showQuestion();
+        } else {
+          showResult();
+        }
+      }, 1200);
+    }
+
+    function showResult() {
+      document.getElementById('question-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.remove('hidden');
+      document.getElementById('quiz-step').innerText = `COMPLETE`;
+      document.getElementById('final-score').innerText = `${score}/5`;
+
+      const circle = document.getElementById('score-circle');
+      const circumference = 58 * 2 * Math.PI;
+      circle.style.strokeDashoffset = circumference - (score / 5) * circumference;
+
+      let title = "System Nominal";
+      let desc = "Logic within expected parameters. Ready for deeper integration.";
+      if (score === 5) { title = "Core Perfected"; desc = "Perfect data integrity. You are a natural architect."; }
+      else if (score < 3) { title = "Diagnostic Warning"; desc = "Gaps detected in fundamental logic. Review protocols."; }
+
+      document.getElementById('score-title').innerText = title;
+      document.getElementById('score-description').innerText = desc;
+    }
+
+    function resetQuiz() {
+      startQuiz();
+    }
+
+    // --- CORE UI LOGIC ---
+    const themeBtn = document.getElementById('theme-btn');
+    const themeIcon = document.getElementById('theme-icon');
+    const body = document.body;
+
+    themeBtn.addEventListener('click', () => {
+      body.classList.toggle('light-mode');
+      const isLight = body.classList.contains('light-mode');
+      themeIcon.setAttribute('data-lucide', isLight ? 'sun' : 'moon');
+      lucide.createIcons();
+      particles.forEach(p => p.updateColors());
+    });
+
+    const cursor = document.getElementById('cursor');
+    const cursorOutline = document.getElementById('cursor-outline');
+
+    window.addEventListener('mousemove', (e) => {
+      const posX = e.clientX, posY = e.clientY;
+      cursor.style.left = `${posX}px`;
+      cursor.style.top = `${posY}px`;
+      cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+    });
+
+    function attachCursorEvents() {
+      document.querySelectorAll('a, button, .cursor-pointer, .btn-cyber, .quiz-option').forEach((el) => {
+        el.addEventListener('mouseenter', () => body.classList.add('cursor-hover'));
+        el.addEventListener('mouseleave', () => body.classList.remove('cursor-hover'));
+      });
+    }
+
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let particles = [];
-    let mouse = { x: -1000, y: -1000 };
+    let mousePos = { x: -1000, y: -1000 };
 
     function initCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
       particles = [];
-      // Create a high density field
       const count = (canvas.width * canvas.height) / 10000;
-      for (let i = 0; i < count; i++) {
-        particles.push(new FlowParticle());
-      }
+      for (let i = 0; i < count; i++) particles.push(new FlowParticle());
     }
 
     class FlowParticle {
-      constructor() {
-        this.reset();
-      }
+      constructor() { this.reset(); this.updateColors(); }
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
         this.size = Math.random() * 1.5 + 0.5;
         this.vx = (Math.random() - 0.5) * 1.5;
         this.vy = (Math.random() - 0.5) * 1.5;
-        this.color = Math.random() > 0.5 ? 'rgba(0, 242, 255, 0.4)' : 'rgba(112, 0, 255, 0.3)';
         this.history = [];
         this.maxHistory = 15;
       }
+      updateColors() {
+        const isLight = body.classList.contains('light-mode');
+        this.color = isLight
+          ? (Math.random() > 0.5 ? 'rgba(14, 165, 233, 0.4)' : 'rgba(99, 102, 241, 0.3)')
+          : (Math.random() > 0.5 ? 'rgba(0, 242, 255, 0.4)' : 'rgba(112, 0, 255, 0.3)');
+      }
       update() {
-        // Background Drift
-        this.x += this.vx;
-        this.y += this.vy;
-
-        // Mouse Interaction (Magnetic Vortex)
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const limit = 250;
-
-        if (dist < limit) {
-          const force = (limit - dist) / limit;
-          // Move towards mouse
-          this.x += dx * force * 0.05;
-          this.y += dy * force * 0.05;
-          // Swirl around mouse
-          this.x += dy * force * 0.15;
-          this.y -= dx * force * 0.15;
+        this.x += this.vx; this.y += this.vy;
+        const dx = mousePos.x - this.x, dy = mousePos.y - this.y, dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 250) {
+          const force = (250 - dist) / 250;
+          this.x += dx * force * 0.05; this.y += dy * force * 0.05;
+          this.x += dy * force * 0.15; this.y -= dx * force * 0.15;
         }
-
-        // Wrap edges
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
-
-        // Update tail
+        if (this.x < 0) this.x = canvas.width; if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height; if (this.y > canvas.height) this.y = 0;
         this.history.push({ x: this.x, y: this.y });
         if (this.history.length > this.maxHistory) this.history.shift();
       }
@@ -486,42 +774,26 @@
         ctx.lineWidth = this.size;
         if (this.history.length > 1) {
           ctx.moveTo(this.history[0].x, this.history[0].y);
-          for (let p of this.history) {
-            ctx.lineTo(p.x, p.y);
-          }
+          this.history.forEach(p => ctx.lineTo(p.x, p.y));
         }
         ctx.stroke();
       }
     }
 
     function animate() {
-      // Slight motion blur effect
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.2)';
+      const isLight = body.classList.contains('light-mode');
+      ctx.fillStyle = isLight ? 'rgba(248, 250, 252, 0.2)' : 'rgba(5, 5, 5, 0.2)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
+      particles.forEach(p => { p.update(); p.draw(); });
       requestAnimationFrame(animate);
     }
 
-    window.addEventListener('mousemove', (e) => {
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-    });
+    window.addEventListener('mousemove', (e) => { mousePos.x = e.clientX; mousePos.y = e.clientY; });
+    window.addEventListener('resize', initCanvas);
 
-    window.addEventListener('resize', () => {
-      initCanvas();
-    });
-
-    // Initialize UI Elements
     window.onload = () => {
-      initCanvas();
-      animate();
+      initCanvas(); animate();
       if (typeof lucide !== 'undefined') lucide.createIcons();
-
-      // Loader termination
       setTimeout(() => {
         document.getElementById('loader').style.opacity = '0';
         setTimeout(() => document.getElementById('loader').style.display = 'none', 800);
@@ -529,14 +801,10 @@
       }, 2000);
     };
 
-    // Scroll Reveal logic
     const reveals = document.querySelectorAll('.reveal');
     const handleScroll = () => {
       reveals.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 100) {
-          el.classList.add('active');
-        }
+        if (el.getBoundingClientRect().top < window.innerHeight - 100) el.classList.add('active');
       });
     };
     window.addEventListener('scroll', handleScroll);
