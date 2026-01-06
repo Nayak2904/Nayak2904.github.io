@@ -381,11 +381,10 @@
       </p>
 
       <div class="flex flex-wrap justify-center gap-6 mb-16">
-        <a href="#projects"
+        <a href="https://github.com/Nayak2904" target="_blank"
           class="btn-cyber px-10 py-5 text-inherit font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
-          Repository <i data-lucide="folder-git-2" class="w-4 h-4"></i>
+          Repository <i data-lucide="github" class="w-4 h-4"></i>
         </a>
-        <!-- Forcefully opens the Resume from Google Drive -->
         <a href="https://drive.google.com/file/d/1EaO8pV5UkT83hTJg9n4hpFMlexwa1g8j/view?usp=sharing" target="_blank"
           class="btn-cyber px-10 py-5 text-inherit font-bold text-[10px] tracking-[0.3em] uppercase flex items-center gap-3">
           Resume <i data-lucide="file-text" class="w-4 h-4"></i>
@@ -450,6 +449,7 @@
     </div>
   </section>
 
+  <!-- Updated Projects Repository Section -->
   <section id="projects" class="py-32 relative reveal">
     <div class="container mx-auto px-6">
       <div class="flex justify-between items-end mb-24">
@@ -457,43 +457,73 @@
         <span class="text-[9px] mono opacity-20 uppercase tracking-[0.3em]">Build_Log: 2025</span>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-1px bg-white/5 border border-white/5">
+      <div class="grid md:grid-cols-2 gap-px bg-white/5 border border-white/5">
+        <!-- Project: SettleX -->
         <div class="glass p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-r border-b">
           <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-primary">
-            <i data-lucide="line-chart" class="w-10 h-10"></i>
+            <i data-lucide="briefcase" class="w-10 h-10"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">Crop Prediction</h3>
-          <p class="text-sm opacity-60 mb-10 leading-relaxed">ML engine forecasting agricultural yields based on climate
-            parameters. Thesis project using Random Forest.</p>
-          <div class="flex gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
+          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">SettleX (Project XIX)</h3>
+          <p class="text-sm opacity-60 mb-10 leading-relaxed">
+            NUS-AIDF Capstone. Developed a "Treasury-as-a-Service" architecture reducing transaction costs by 90% and
+            compressing settlement time from T+5 to T+1 via RegTech automation.
+          </p>
+          <div class="flex flex-wrap gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
             <span>Python</span>
-            <span>Machine Learning</span>
+            <span>SQL</span>
+            <span>React</span>
+            <span>AI</span>
           </div>
         </div>
 
-        <div class="glass p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-r border-b">
+        <!-- Project: ShramLink -->
+        <div class="glass p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-b">
           <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-secondary">
-            <i data-lucide="layers" class="w-10 h-10"></i>
+            <i data-lucide="users" class="w-10 h-10"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">ShramLink</h3>
-          <p class="text-sm opacity-60 mb-10 leading-relaxed">Hyperlocal platform connecting informal workers with
-            escrow-backed wage protection systems.</p>
-          <div class="flex gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
+          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">ShramLink Platform</h3>
+          <p class="text-sm opacity-60 mb-10 leading-relaxed">
+            Hyperlocal microservices connecting informal workers with employers. Features Wage Protection (Escrow) and
+            "Low-Tech Onboarding" via SMS to bridge the smartphone gap.
+          </p>
+          <div class="flex flex-wrap gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
             <span>Microservices</span>
             <span>FinTech</span>
+            <span>Escrow</span>
           </div>
         </div>
 
-        <div class="glass p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-b">
-          <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-cyan-400">
-            <i data-lucide="stethoscope" class="w-10 h-10"></i>
+        <!-- Project: Donate Red -->
+        <div class="glass p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-r border-b">
+          <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-red-500">
+            <i data-lucide="droplets" class="w-10 h-10"></i>
           </div>
-          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">AI Doctor</h3>
-          <p class="text-sm opacity-60 mb-10 leading-relaxed">Fairness-optimized scheduling logic for healthcare access
-            using real-time distribution algorithms.</p>
-          <div class="flex gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
-            <span>Algorithmic</span>
-            <span>Optimization</span>
+          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">Donate Red</h3>
+          <p class="text-sm opacity-60 mb-10 leading-relaxed">
+            Centralized Blood Bank System for rural connectivity. Engineered an Admin Dashboard for inventory tracking
+            and a secure search engine to filter donors by blood group.
+          </p>
+          <div class="flex flex-wrap gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
+            <span>PHP</span>
+            <span>SQL</span>
+            <span>HTML/CSS</span>
+          </div>
+        </div>
+
+        <!-- Project: Crop Yield Prediction -->
+        <div class="glass p-12 hover:bg-white/[0.03] transition-all group cursor-pointer border-b">
+          <div class="mb-8 opacity-40 group-hover:opacity-100 transition-all group-hover:text-green-400">
+            <i data-lucide="bar-chart-3" class="w-10 h-10"></i>
+          </div>
+          <h3 class="text-2xl font-bold mb-4 tracking-tighter uppercase">Crop Yield Prediction</h3>
+          <p class="text-sm opacity-60 mb-10 leading-relaxed">
+            B.Sc. Thesis. Predictive model forecasting agricultural output based on temperature and rainfall using
+            Random Forest and Decision Tree algorithms with a 75/25 split.
+          </p>
+          <div class="flex flex-wrap gap-4 text-[9px] mono uppercase opacity-30 tracking-widest">
+            <span>Python</span>
+            <span>Machine Learning</span>
+            <span>Random Forest</span>
           </div>
         </div>
       </div>
